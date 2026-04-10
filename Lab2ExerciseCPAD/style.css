@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, "Segoe UI", sans-serif;
+    background: #eef2ff;
+    padding: 2rem 1.5rem;;
+}
+
+.container {
+    max-width: 1000px; margin: 0 auto;
+}
+
+header{
+    background: white;
+    border-radius: 1rem;
+    padding: 1rem 1rem;
+    box-shadow: 0 5px 10px rgb(218, 218, 218);
+    border: 1px solid #cbd5e1;
+}
+
+header h1 {
+    font-size: 1.7rem;
+    color: rgb(3, 112, 255);
+}
+
+select {
+    border-radius: 1rem;
+    padding: 0.3rem 0.6rem;
+    margin-top: 0.8rem;
+    background: linear-gradient(125deg, #3871f6, #6363ff);
+    font-weight: bold;
+    color: #eef2ff;
+    border: 2px solid #cbd5e1;
+}
+
+select:hover {
+    background: #1d50c7;
+}
+
+option {
+    color: black;
+    background-color: white;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.8rem;
+}
+
+section {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background: white;
+    box-shadow: 0 5px 10px rgb(218, 218, 218);
+}
+
+section h2 {
+    border-left: 4px solid #1e62ff;
+    padding-left: 0.7rem;
+}
+
+section button {
+    padding: 0.4rem 0.6rem;
+    margin-top: 1rem;
+    border: 2px solid #cbd5e1;
+    border-radius: 1rem;
+    background-color: #3b74f7;
+    font-weight: bold;
+    color: white;
+}
+
+section button:hover {
+    background-color: #1d50c7;
+}
