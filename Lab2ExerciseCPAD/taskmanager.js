@@ -106,3 +106,17 @@ function updateTask(taskId, updatedData) {
     oldCard.replaceWith(newCard);
 }
 
+document.querySelectorAll('ul').forEach(list => {
+    list.addEventListener('click', function(e) {
+
+        const action = e.target.getAttribute('data-action');
+        const id = e.target.getAttribute('data-id');
+
+        if (!action || !id) return;
+
+        const taskId = parseInt(id);
+
+        if (action === 'delete') deleteTask(taskId);
+        if(action === 'edit') editTask(taskId);
+    });
+});
