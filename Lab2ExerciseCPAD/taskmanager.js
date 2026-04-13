@@ -59,10 +59,50 @@ function createTaskCard (taskObj) {
     return li;
 }
 
-function addTask(columnId, task) {
+function addTask(columnId, taskObj) {
     const list = document.querySelector(`#${columnId} ul`);
-    const card = createTaskCard(task);
+    const card = createTaskCard(taskObj);
 
     list.appendChild(card);
     updateCounter();
 }
+
+function deleteTask(taskId) {
+    const el = document.querySelector(`[data-id='${taskId}']`);
+    if(!el) return;
+
+    el.classList.add('fade-out');
+
+    setTimeout(() => {
+        el.remove();
+        tasks = tasks.filter(t => t.id !== taskId);
+        updateCounter();
+    }, 300)
+}
+
+function editTask(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    editingId = taskId;
+
+    document.getElementById('titleInput').value = task.title;
+    document.getElementById('descInput').value = task.descriptions;
+    document.getElementById('priority').value = task.priority;
+    document.getElementById('dateInput').value = task.dueDate;
+
+    document.getElementById('modal').classList.remove('hidden');
+}
+
+function updateTask(taskId, updatedData) {
+    const task = tasks.find.find(t => t.id === taskId);
+    if (!task) return;
+
+    Object.assign(task, updatedData);
+
+    const oldCard = document.querySelector(`[data-id='${taskId}']`);
+    const newCard = createTaskCard(task);
+
+    oldCard.replaceWith(newCard);
+}
+
