@@ -128,3 +128,23 @@ document.querySelectorAll('.add-btn').forEach(btn => {
         document.getElementById('modal').classList.remove('hidden');
     });
 });
+
+document.getElementById('saveBtn').addEventListener('click', () =>{
+
+    const data = {
+        id: editingId ?? tasksID++,
+        title: document.getElementById('titleInput').value,
+        description: document.getElementById('descInput').value,
+        priority: document.getElementById('priorityInput').value,
+        dueDate: document.getElementById('dateInput').value
+    };
+
+    if (editingId != null) {
+        updateTask(editingId, data);
+    } else {
+        tasks.push(data);
+        addTask(currentColumn, data);
+    }
+
+    document.getElementById('modal').classList.add('hidden');
+})
