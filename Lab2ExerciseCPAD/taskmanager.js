@@ -120,3 +120,11 @@ document.querySelectorAll('ul').forEach(list => {
         if(action === 'edit') editTask(taskId);
     });
 });
+
+document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        currentColumn = btn.getAttribute('data-column');
+        editingId = null;
+        document.getElementById('modal').classList.remove('hidden');
+    });
+});
