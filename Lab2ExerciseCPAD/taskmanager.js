@@ -147,4 +147,33 @@ document.getElementById('saveBtn').addEventListener('click', () =>{
     }
 
     document.getElementById('modal').classList.add('hidden');
-})
+});
+
+document.getElementById('priorityFilter').addEventListener('change', function() {
+    
+    const value = this.value;
+
+    document.querySelectorAll('.task-card').forEach(card=> {
+        const match = value === 'all' || card.getAttribute('data-priority') === value;
+        card.classList.toggle('is-hidden', !match);
+    });
+});
+
+document.getElementById('clearDone').addEventListener('click', () => {
+
+  const cards = document.querySelectorAll('#done .task-card');
+
+  cards.forEach((card, index) => {
+    setTimeout(() => {
+      card.classList.add('fade-out');
+      setTimeout(() => card.remove(), 300);
+    }, index * 100);
+  });
+
+  tasks = tasks.filter(t => t.column !== 'done');
+});
+
+function updateCounter() {
+  document.getElementById('taskCounter').textContent =
+    tasks.length + " Tasks";
+}
