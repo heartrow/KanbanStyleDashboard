@@ -1,179 +1,56 @@
 let tasks = [];
-let tasksID = 0;
-let editingId = null;
-let currentColumn = null;
+
+const noteCounterSpan = document.querySelector('.taskCounter');
+const 
+
+function updateTaskCounter() {
+    const count = tasks.length;
+    noteCounterSpan.textContent = 
+        count === 1 ? "1 note" : `${count} notes`;
+}
 
 function createTaskCard (taskObj) {
-    const li = document.createElement('li');
-    li.setAttribute('data-id', taskObj.id);
-    li.classList.add('task-card');
-    li.setAttribute('data-priority', taskObj.priority);
+    const li = document.createElement("li");
+    li.classList.add("task-card");
 
-    const title = document.createElement('span');
-    titletextContent = taskObj.title;
-    title.classList.add('task-title');
-
-    title.addEventListener('dblclick', () => {
-        const input = document.createElement('input');
-        input.value = taskObj.title;
-
-        input.addEventListener('blur', () => {
-            taskObj.title = input.value;
-            title.textContent = taskObj.title;
-            li.replaceChild(title, input);
-        });
-
-        input.addEventListener('keydown', (e) => {
-            if(e.key === 'Enter') input.blur();
-        });
-
-        li.replaceChild(input, title);
-    });
-
-    const desc = document.createElement('p');
-    desc.textContent = taskObj.description;
-
-    const priority = document.createElement('span');
-    priority.textContent = taskObj.priority;
-
-    const date = document.createElement('small');
-    date.textContent = taskObj.dueDate;
-
-    const editBtn = document.createElement('button');
-    editBtn.textContent = 'Edit';
-    editBtn.setAttribute('data-action', 'edit');
-    editBtn.setAttribute('data-id', taskObj.id);
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.setAttribute('data-action', 'delete');
-    deleteBtn.setAttribute('data-id', taskObj.id);
-
+    const title = document.createElement("h3");
+    title.textContent = taskObj.title;
     li.appendChild(title);
+
+    const desc = document.createElement("p");
+    desc.textContent = taskObj.desc;
     li.appendChild(desc);
+
+    const priority = document.createElement("span");
+    priority.classList.add("badge");
+    priority.classList.add("priority-" + taskObj.priority.toLowerCase());
+    priority.textContent = taskObj.priority;
     li.appendChild(priority);
-    li.appendChild(date);
-    li.appendChild(editBtn);
-    li.appendChild(deleteBtn);
 
-    return li;
-}
+    const due = document.createElement("p");
+    due.classList.add("due-date");
+    due.textContent = "Due: " + taskObj.due;
+    li.appendChild(due);
 
-function addTask(columnId, taskObj) {
-    const list = document.querySelector(`#${columnId} ul`);
-    const card = createTaskCard(taskObj);
+    //button container for styling
+    const btnContainer = document.createElement("div");
+    btnContainer.classList.add("task-actions");
 
-    list.appendChild(card);
-    updateCounter();
-}
+    const editBtn = document.createElement("button");
+    editBtn.classList.add("edit-button");
+    // sepatutnye ade id 
+    editBtn.textContent = "Edit";
+    btnContainer.appendChild(editBtn);
 
-function deleteTask(taskId) {
-    const el = document.querySelector(`[data-id='${taskId}']`);
-    if(!el) return;
-
-    el.classList.add('fade-out');
-
-    setTimeout(() => {
-        el.remove();
-        tasks = tasks.filter(t => t.id !== taskId);
-        updateCounter();
-    }, 300)
-}
-
-function editTask(taskId) {
-    const task = tasks.find(t => t.id === taskId);
-    if (!task) return;
-
-    editingId = taskId;
-
-    document.getElementById('titleInput').value = task.title;
-    document.getElementById('descInput').value = task.descriptions;
-    document.getElementById('priority').value = task.priority;
-    document.getElementById('dateInput').value = task.dueDate;
-
-    document.getElementById('modal').classList.remove('hidden');
-}
-
-function updateTask(taskId, updatedData) {
-    const task = tasks.find.find(t => t.id === taskId);
-    if (!task) return;
-
-    Object.assign(task, updatedData);
-
-    const oldCard = document.querySelector(`[data-id='${taskId}']`);
-    const newCard = createTaskCard(task);
-
-    oldCard.replaceWith(newCard);
-}
-
-document.querySelectorAll('ul').forEach(list => {
-    list.addEventListener('click', function(e) {
-
-        const action = e.target.getAttribute('data-action');
-        const id = e.target.getAttribute('data-id');
-
-        if (!action || !id) return;
-
-        const taskId = parseInt(id);
-
-        if (action === 'delete') deleteTask(taskId);
-        if(action === 'edit') editTask(taskId);
-    });
-});
-
-document.querySelectorAll('.add-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        currentColumn = btn.getAttribute('data-column');
-        editingId = null;
-        document.getElementById('modal').classList.remove('hidden');
-    });
-});
-
-document.getElementById('saveBtn').addEventListener('click', () =>{
-
-    const data = {
-        id: editingId ?? tasksID++,
-        title: document.getElementById('titleInput').value,
-        description: document.getElementById('descInput').value,
-        priority: document.getElementById('priorityInput').value,
-        dueDate: document.getElementById('dateInput').value
-    };
-
-    if (editingId != null) {
-        updateTask(editingId, data);
-    } else {
-        tasks.push(data);
-        addTask(currentColumn, data);
-    }
-
-    document.getElementById('modal').classList.add('hidden');
-});
-
-document.getElementById('priorityFilter').addEventListener('change', function() {
+    const deleteBtn = document.createElement("button");
+    deleteBtn.classList.add("delete-btn");
+    //sepatutnye ade id
+    deleteBtn.textContent = "Delete";
+    btnContainer.appendChild(deleteBtn);
     
-    const value = this.value;
+    li.appendChild(btnContainer);
+}
 
-    document.querySelectorAll('.task-card').forEach(card=> {
-        const match = value === 'all' || card.getAttribute('data-priority') === value;
-        card.classList.toggle('is-hidden', !match);
-    });
-});
-
-document.getElementById('clearDone').addEventListener('click', () => {
-
-  const cards = document.querySelectorAll('#done .task-card');
-
-  cards.forEach((card, index) => {
-    setTimeout(() => {
-      card.classList.add('fade-out');
-      setTimeout(() => card.remove(), 300);
-    }, index * 100);
-  });
-
-  tasks = tasks.filter(t => t.column !== 'done');
-});
-
-function updateCounter() {
-  document.getElementById('taskCounter').textContent =
-    tasks.length + " Tasks";
+function addTask (columnId, taskObj) {
+    
 }
