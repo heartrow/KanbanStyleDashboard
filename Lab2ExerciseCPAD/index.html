@@ -11,7 +11,7 @@
     <div class="container"> 
         <header>
             <h1>Kanban Style Dashboard</h1>
-            <span class="taskCounter">0 Task</span>
+            <span class="taskCounter" id="task-counter">0 Task</span>
 
             <label for="priority-class">Priority: </label>
             <select name="priority-class" id="priority-class">
@@ -22,7 +22,7 @@
         </header>
     </div>
 
-    <div class="grid">
+    <div class="column">
         <section id="todo">
             <h2>To Do</h2>
             <ul></ul>
@@ -31,14 +31,15 @@
 
         <section id="inprogress">
             <h2>In Progress</h2>
-            <button class="add-btn" data-column="inprogress">Add Task</button>
             <ul></ul>
+            <button class="add-btn" data-column="inprogress">Add Task</button>
         </section>
         
         <section id="done">
             <h2>Done</h2>
             <ul></ul>
             <button class="add-btn" data-column="done">Add Task</button>
+            <button id="clear-done">Clear All</button>
         </section>
     </div>
 

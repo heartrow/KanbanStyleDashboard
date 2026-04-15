@@ -1,7 +1,8 @@
 let tasks = [];
+let currentEditId = null;
 
 const noteCounterSpan = document.querySelector('.taskCounter');
-const 
+const taskCard = document.getElementById(taskId);
 
 function updateTaskCounter() {
     const count = tasks.length;
@@ -11,6 +12,7 @@ function updateTaskCounter() {
 
 function createTaskCard (taskObj) {
     const li = document.createElement("li");
+    li.setAttribute('data-id', taskObj.id);
     li.classList.add("task-card");
 
     const title = document.createElement("h3");
@@ -38,21 +40,24 @@ function createTaskCard (taskObj) {
 
     const editBtn = document.createElement("button");
     editBtn.classList.add("edit-button");
-    // sepatutnye ade id 
+    editBtn.setAttribute('data-action', 'edit');
+    editBtn.setAttribute('data-id', taskObj.id);
     editBtn.textContent = "Edit";
     btnContainer.appendChild(editBtn);
 
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("delete-btn");
-    //sepatutnye ade id
+    deleteBtn.setAttribute('data-action', 'delete');
+    deleteBtn.setAttribute('data-id', taskObj.id)
     deleteBtn.textContent = "Delete";
     btnContainer.appendChild(deleteBtn);
     
     li.appendChild(btnContainer);
+    return li;
 }
 
 function addTask (columnId, taskObj) {
-    const column = document.getElementById("columnId");
+    const column = document.getElementById(columnId);
 
     const taskList = column.querySelector("ul");
 
@@ -64,8 +69,30 @@ function addTask (columnId, taskObj) {
 }
 
 function deleteTask (taskId) {
-    const taskCard = document.getElementById(taskId);
+    const taskCard = document.querySelector(`[data-id="${taskId}"]`);
+
     if (!taskCard) return;
 
-    const column = taskCard.closest(".column");
+    taskCard.classList.add("fade-out");
+
+    taskCard.addEventListener("animationend", function () {
+        taskCard.remove();
+
+        updateTaskCounter();
+    });
+}
+
+function editTask(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    document.getElementById("taskTitle").value = task.title;
+    document.getElementById("taskDesc").value = task.desc;
+    document.getElementById("priority").value = task.priority;
+    document.getElementById("date").value = task.due;
+
+    currentEditId = taskId;
+
+    const modal = document.getElementById("modal");
+    modal.classList.remove("hidden");
 }
