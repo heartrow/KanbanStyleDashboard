@@ -52,5 +52,20 @@ function createTaskCard (taskObj) {
 }
 
 function addTask (columnId, taskObj) {
-    
+    const column = document.getElementById("columnId");
+
+    const taskList = column.querySelector("ul");
+
+    const taskCard = createTaskCard(taskObj);
+
+    taskList.appendChild(taskCard);
+
+    updateTaskCounter();
+}
+
+function deleteTask (taskId) {
+    const taskCard = document.getElementById(taskId);
+    if (!taskCard) return;
+
+    const column = taskCard.closest(".column");
 }
