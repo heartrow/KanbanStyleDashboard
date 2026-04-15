@@ -3,6 +3,7 @@ let currentEditId = null;
 
 const noteCounterSpan = document.querySelector('.taskCounter');
 const taskCard = document.getElementById(taskId);
+const priorityFilter = document.getElementById("priority-class");
 
 function updateTaskCounter() {
     const count = tasks.length;
@@ -165,5 +166,21 @@ todoList.addEventListener('click', function(event) {
     } else if (action === 'edit') {
         editTask(taskId);
     }
+});
+
+//Priority Filter
+priorityFilter.addEventListener("change", function() {
+    const selectedPriority = priorityFilter.value;
+
+    const allCards = document.querySelector(".task-card");
+
+    allCards.forEach(card => {
+        const badge = card.querySelector(".badge");
+        const cardPriority = badge.textContent.toLowerCase().replace(/\s+/g, '-');
+
+        const shouldHide = selectedPriority !== "all" && cardPriority !== selectedPriority;
+
+        card.classList.toggle("is-hidden", shouldHide);
+    });
 });
 

@@ -166,3 +166,7 @@ section button:hover {
         transform: scale(0.95);
     }
 }
+
+.is-hidden {
+    display: none !important;
+}
