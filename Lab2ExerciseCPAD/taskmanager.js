@@ -19,6 +19,35 @@ function createTaskCard (taskObj) {
     title.textContent = taskObj.title;
     li.appendChild(title);
 
+    title.addEventListener("dblclick", function() {
+        const currentText = title.textContent;
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = currentText;
+        input.classList.add("edit-input");
+
+        title.replaceWith(input);
+        input.focus();
+
+        const saveInlineEdit = () => {
+            const newTitle = input.value.trim();
+            if (newTitle) {
+                title.textContent = newTitle;
+
+                const task = tasks.find(t => t.id === taskObj.id);
+                if(task) task.title = newTitle;
+            }
+            input.replaceWith(title);
+        };
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") saveInlineEdit();
+        });
+
+        input.addEventListener("blur", saveInlineEdit);
+    });
+
     const desc = document.createElement("p");
     desc.textContent = taskObj.desc;
     li.appendChild(desc);
@@ -119,3 +148,22 @@ function updateTask(taskId, updatedData) {
     closeModal();
     currentEditId = null;
 }
+
+//Event Delegation
+const todoList = document.querySelector('#todo ul');
+
+todoList.addEventListener('click', function(event) {
+    const target = event.target;
+
+    const action = target.getAttribute('data-action');
+    const taskId = target.getAttribute('data-id');
+
+    if (!action || !taskId) return;
+
+    if (action === 'delete') {
+        deleteTask(taskId);
+    } else if (action === 'edit') {
+        editTask(taskId);
+    }
+});
+
