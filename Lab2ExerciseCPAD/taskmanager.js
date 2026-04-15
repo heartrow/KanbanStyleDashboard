@@ -96,3 +96,26 @@ function editTask(taskId) {
     const modal = document.getElementById("modal");
     modal.classList.remove("hidden");
 }
+
+function updateTask(taskId, updatedData) {
+    const taskIndex = tasks.find(t => t.id === taskId);
+    if (taskIndex !== -1) {
+        tasks[taskIndex] = {...tasks[taskIndex], ...updatedData}; //this start wiht the old tasks then overlay wiht new data (if have new attribute it will add the attribute)
+    }
+
+    const taskCard = document.querySelector(`[data-id]="${taskId}"`);
+    if (!taskCard) return;
+
+    taskCard.querySelector("h3").textContent = updatedData.title;
+    taskCard.querySelector("p").textContent = updatedData.desc;
+
+    const badge = taskCard.querySelector(".badge");
+    badge.textContent = updatedData.priority;
+
+    badge.className = "badge priority-" + updatedData.priority.toLowerCase();
+
+    taskCard.querySelector(".due-date").textContent = "Due: " + updatedData.due;
+
+    closeModal();
+    currentEditId = null;
+}
