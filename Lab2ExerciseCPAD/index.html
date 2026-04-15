@@ -3,73 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanban Style Dashboard</title>
+    <title>My Task Board - Kanban</title>
     <link rel="stylesheet" href="style.css">
+    <script src="taskmanager.js" defer></script>
 </head>
 <body>
 
-    <div class="container"> 
-        <header>
-            <h1>Kanban Style Dashboard</h1>
-            <span class="taskCounter" id="task-counter">0 Task</span>
-
-            <label for="priority-class">Priority: </label>
-            <select name="priority-class" id="priority-class">
-                <option value="not-important">Not Important</option>
-                <option value="important">Important</option>
-                <option value="urgent-important">Urgent & Important</option>
+    <header>
+        <h1>My Task Board</h1>
+        <div class="controls">
+            <span id="task-counter" class="badge">Total Tasks: 0</span>
+            
+            <label for="filter-priority">Filter:</label>
+            <select id="filter-priority">
+                <option value="all">All Priorities</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
             </select>
-        </header>
-    </div>
+        </div>
+    </header>
 
-    <div class="column">
-        <section id="todo">
+    <main class="board">
+        <section id="todo" class="column">
             <h2>To Do</h2>
-            <ul></ul>
-            <button class="add-btn" data-column="todo">Add Task</button>
+            <ul id="todo-list"></ul>
+            <button class="open-modal-btn" data-column="todo">Add Task</button>
         </section>
 
-        <section id="inprogress">
+        <section id="inprogress" class="column">
             <h2>In Progress</h2>
-            <ul></ul>
-            <button class="add-btn" data-column="inprogress">Add Task</button>
+            <ul id="inprogress-list"></ul>
+            <button class="open-modal-btn" data-column="inprogress">Add Task</button>
         </section>
-        
-        <section id="done">
-            <h2>Done</h2>
-            <ul></ul>
-            <button class="add-btn" data-column="done">Add Task</button>
-            <button id="clear-done">Clear All</button>
+
+        <section id="done" class="column">
+            <div class="column-header">
+                <h2>Done</h2>
+                <button id="clear-done-btn">Clear All</button>
+            </div>
+            <ul id="done-list"></ul>
+            <button class="open-modal-btn" data-column="done">Add Task</button>
         </section>
+    </main>
+
+    <div id="task-modal" class="modal is-hidden">
+        <div class="modal-content">
+            <h3 id="modal-title-text">Add New Task</h3>
+            
+            <form id="task-form">
+                <div class="form-group">
+                    <label for="task-title">Title</label>
+                    <input type="text" id="task-title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="task-desc">Description</label>
+                    <textarea id="task-desc" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="task-priority">Priority</label>
+                    <select id="task-priority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="task-date">Due Date</label>
+                    <input type="date" id="task-date">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" id="cancel-btn">Cancel</button>
+                    <button type="submit" id="save-btn">Save Task</button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div id="modal" class="hidden">
-
-        <h2>Assign Task</h2>
-
-        <div class="form-group">
-            <label>Task Title</label>
-            <input type="text" id="taskTitle" placeholder="e.g., CPAD Assignment">
-        </div>
-
-        <div class="form-group">
-            <label>Description</label>
-            <textarea id="taskDesc" placeholder="Write some description.."></textarea>
-        </div>
-
-        <label for="priority">Choose a priority: </label>
-        <select name="priority" id="priority">
-            <option value="not-important">Not Important</option>
-            <option value="important">Important</option>
-            <option value="urgent-important">Urgent & Important</option>
-        </select>
-
-        <label for="date">Pick a date: </label>
-        <input type="date" id="date" name="date">
-
-        <button id="saveBtn">Save</button>
-        <button id="cancelBtn">Cancel</button>
-    </div>
-
-    <script src="taskmanager.js"></script>
 </body>
+</html>
